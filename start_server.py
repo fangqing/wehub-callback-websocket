@@ -13,6 +13,10 @@ env = Environment(loader=FileSystemLoader('app/templates'))
 class Root(object):
 	@cherrypy.expose
 	def index(self):
+		return "yes,server is running"
+
+	@cherrypy.expose
+	def admin(self):
 		temp = env.get_template("manager.html")
 		return temp.render(clients =WeHubClientManager().clients)
 
@@ -35,8 +39,9 @@ class Root(object):
 		return "you commit commond is:" + str(message)
 
 if __name__ == '__main__':
+	from const import port
 	cherrypy.config.update({
-		'server.socket_port': 3456,
+		'server.socket_port': port,
 		'tools.staticdir.root': os.path.abspath(os.path.dirname(__file__))
 		})
 

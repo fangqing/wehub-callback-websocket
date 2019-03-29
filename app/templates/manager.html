@@ -1,0 +1,59 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <script src="/static/js/jquery-3.3.1.min.js"></script>
+    <link href="/static/css/bootstrap.css" rel="stylesheet">
+    <script src="/static/js/bootstrap.min.js"></script>
+    <link rel="shortcut icon" href="/static/wehub.ico">
+    <title>简单的管理界面</title>
+</head>
+<body>
+<div>
+    <H3>选择要发送的对象</H3>
+     <section class='panel'>
+        <div class='panel-body'>
+            <select name = "select" id = "select_ip" style='width:200px;font-size:14px;' onchange="selectShow()">
+                {%if clients is defined%}
+                {% for ip in clients.keys() %}
+                <option value = "{{ip}}">client ID:{{ip}}</option>
+                {% endfor %}
+                {% endif %}
+            </select>
+        </div>
+    </section>
+    <H3> 输入发送内容</H3>
+    <section class='panel'>
+        <div class='panel-body'>
+           <textarea  id="input_text" cols="100"   rows="20"  autofocus  placeholder="输入内容...">
+           </textarea>
+        </div>
+        <div>
+            <button type='button' class = 'btn btn-white' onclick='send(input_text.value);'>
+                <font size=4 >发送</font>
+            </button>
+        </div>
+    </section>
+</div>
+<script type="text/javascript">
+    function send(text) {
+        $.ajax({
+        type: "post",
+        url: '/commit_commond',
+        async: true,
+        data: {
+            'clientid':$('#select_ip').val(),
+            'message':text
+        },
+        success: function(msg) {
+            console.log(msg);
+        },
+        error: function (msg) {
+            console.log(msg);
+        },
+        dataType:'text'
+        });
+    }
+</script>
+</body>

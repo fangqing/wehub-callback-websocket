@@ -1,1 +1,3 @@
-# wehub_callback_ws
+
+客户端通过 ws://127.0.0.1:3456/ws与服务端进行websocket连接
+在浏览器中通过http://127.0.0.1:3456/admin 页面对客户端进行管理

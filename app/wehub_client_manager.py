@@ -23,7 +23,7 @@ class WeHubClientManager(object):
 		"""
 		remove a client object from pool
 		"""
-		self.clients.pop(ip)
+		self.clients.pop(name)
 		self.refresh()
 		print ('remove a wehub client, current client count: %s,tid=%d'%(self.count(),_thread.get_ident()))
 

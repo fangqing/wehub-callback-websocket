@@ -14,7 +14,7 @@
     <H3>选择要发送的对象</H3>
      <section class='panel'>
         <div class='panel-body'>
-            <select name = "select" id = "select_ip" style='width:200px;font-size:14px;' onchange="selectShow()">
+            <select name = "select" id = "select_ip" style="width:200px;font-size:14px;">
                 {%if clients is defined%}
                 {% for ip in clients.keys() %}
                 <option value = "{{ip}}">client ID:{{ip}}</option>
@@ -30,14 +30,14 @@
            </textarea>
         </div>
         <div>
-            <button type='button' class = 'btn btn-white' onclick='send(input_text.value);'>
+            <button type='button' class = 'btn btn-white' onclick='send_command(input_text.value);'>
                 <font size=4 >发送</font>
             </button>
         </div>
     </section>
 </div>
 <script type="text/javascript">
-    function send(text) {
+    function send_command(text) {
         $.ajax({
         type: "post",
         url: '/commit_commond',

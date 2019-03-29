@@ -13,7 +13,7 @@ env = Environment(loader=FileSystemLoader('app/templates'))
 class Root(object):
 	@cherrypy.expose
 	def index(self):
-		return "yes,server is running"
+		return 'yes,server is running.<a href="admin">进入管理页面</a>'
 
 	@cherrypy.expose
 	def admin(self):

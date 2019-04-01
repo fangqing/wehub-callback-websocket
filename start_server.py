@@ -35,8 +35,7 @@ class Root(object):
 		if clientid not in WeHubClientManager().clients:
 			return "param error!"
 		client = WeHubClientManager().clients.get(clientid)
-		client.process_browse_command(message)
-		return "you commit commond is:" + str(message)
+		return client.process_browse_command(message)
 
 if __name__ == '__main__':
 	from const import port

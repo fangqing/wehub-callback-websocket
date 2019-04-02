@@ -38,9 +38,8 @@ class Root(object):
 		return client.process_browse_command(message)
 
 if __name__ == '__main__':
-	from const import port
 	cherrypy.config.update({
-		'server.socket_port': port,
+		'server.socket_port': 3456,
 		'tools.staticdir.root': os.path.abspath(os.path.dirname(__file__))
 		})
 

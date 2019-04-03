@@ -13,7 +13,7 @@
 测试方法:
 1.运行 python start_server.py 开启服务器
 
-2.在浏览器中打开这个页面:http://coolaf.com/tool/chattest
+2.在浏览器中打开测试页面 websocket_client_test.html 
 将页面中的websockt地址改为 ws://127.0.0.1:3456/ws,然后点击"连接"
 此时服务端会和该网页之间建立一个websocket连接
 打开多个浏览器tab,重复上面的操作,则会建立了多个websocket连接

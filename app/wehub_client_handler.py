@@ -4,12 +4,10 @@ from .wehub_client_manager import WeHubClientManager
 import logging
 from . import const
 
-
 class WeHubClientHandler(WebSocket):
 	def _init(self):
 		self.logger = logging.getLogger('WeHubClientHandler')
-		pass
-
+		
 	def opened(self):
 		print("a client connected = %s,pid = %s"%(self.sock.getpeername(),os.getpid()))
 		WeHubClientManager().add(self,str(self.sock.getpeername()))
@@ -20,7 +18,7 @@ class WeHubClientHandler(WebSocket):
 		WeHubClientManager().remove(self,str(self.sock.getpeername()))
 
 	def received_message(self, message):
-		print ('ws received a message,type=',type(message))
+		print ("ws received a message,len=%d,type=%s"%(len(message),type(message)))
 		try:
 			if message.is_text:
 				request_dict = json.loads(str(message),strict=False)
@@ -33,23 +31,21 @@ class WeHubClientHandler(WebSocket):
 
 	def process_commond(self,request_dict):
 		#处理wehub客户端程序发过来的消息
-		try:
-			appid = request_dict.get('appid',None)
-			action = request_dict.get('action',None)
-			wxid = request_dict.get('wxid',None)
-			req_data_dict = request_dict.get('data',{})
+		appid = request_dict.get('appid',None)
+		action = request_dict.get('action',None)
+		wxid = request_dict.get('wxid',None)
+		req_data_dict = request_dict.get('data',{})
 
-			if appid is None or action is None or wxid is None:
-				rsp_dict = {"error_code":1,"error_reason":'参数错误',"data":{}}
+		if appid is None or action is None or wxid is None:
+			self.logger.info("invalid param")
+			return
 
-			error_code, error_reason,ack_data,ack_type = self.main_req_process(wxid,action,req_data_dict)
-			ack_dict= {'error_code':error_code,'error_reason':error_reason,'ack_type':str(ack_type),'data':ack_data}
-			print ("ack_dict = ",ack_dict)
-		except Exception as e:
-			print(e)
+		error_code, error_reason,ack_data,ack_type = self.main_req_process(wxid,action,req_data_dict)
+		ack_dict= {'error_code':error_code,'error_reason':error_reason,'ack_type':str(ack_type),'data':ack_data}
+		print("-------------respone data:",ack_dict)
+		self.send(json.dumps(ack_dict))
+
 		
-		#self.send(json.dumps(rsp_data))
-
 	def process_browse_command(self,message):
 		#处理浏览器发过来的命令(必须是json能解析的格式)
 		try:
@@ -70,7 +66,7 @@ class WeHubClientHandler(WebSocket):
 		if wxid is None or action is None:
 			return 1,'参数错误',{},ack_type
 		if action=='login':
-			return 0,"no error",ack_data_dict,ack_type
+			return 0,"no error",{},ack_type
 		if action=='report_friend_add_request':
 			task_data = {
 				'task_type':const.TASK_TYPE_PASS_FRIEND_VERIFY,
@@ -110,14 +106,14 @@ class WeHubClientHandler(WebSocket):
 								'wxid_from':wxid_from
 							}
 						}
-						app.logger.info("begin auto confirm transferid")
+						self.logger.info("begin auto confirm transferid")
 						ack_data_dict = {'reply_task_list':[task_data]}
 						return 0,'',ack_data_dict,ack_type
 				elif msg_type==1:
 					msg = msg_unit.get("msg","")
 					room_wxid = msg_unit.get("room_wxid","")
 					wxid_from = msg_unit.get("wxid_from","")
-					app.logger.info("recv chatmsg:{0},from:{1}".format(msg,wxid_from))
+					self.logger.info("recv chatmsg:{0},from:{1}".format(msg,wxid_from))
 
 					#测试代码
 					if wxid_from ==const.TEST_WXID and  msg==str('123'):

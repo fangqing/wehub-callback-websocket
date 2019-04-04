@@ -10,9 +10,11 @@
 
 客户端通过 ws://127.0.0.1:3456/ws与服务端进行websocket连接
 
-(客户端可以是任何能发起websocket连接的程序,可以通过websocket_client_test.html  这个页面发起websocket 连接)
+(可以通过websocket_client_test.html  这个页面发起websocket连接)
 
-可在浏览器中通过http://127.0.0.1:3456/admin  给ws客户端发数据.
+可以在浏览器中通过http://127.0.0.1:3456/admin  给ws客户端直接发送数据
+
+若要增加功能请修改 app\templates\manager.html  文件
 
 ---
 

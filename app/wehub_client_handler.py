@@ -49,10 +49,10 @@ class WeHubClientHandler(WebSocket):
 	def process_browse_command(self,message):
 		#处理浏览器发过来的命令(必须是json能解析的格式)
 		try:
-			command_data = json.loads(message,strict=False)
+			command_data = json.loads(str(message),strict=False)
 		except  Exception as e:
 			print(e)
-			return "消息解析失败:(%s)"%e
+			return "json解析失败:(%s)"%e
 
 		self.send(json.dumps(command_data))
 		return "消息提交成功: %s"%message

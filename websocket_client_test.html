@@ -1,15 +1,15 @@
 <html>
       <head>
-          <title>WebSocket客户端测试页面</title>
+          <title>webSocket客户端测试页面</title>
       </head>
       <body>
-          <h3>WebSocket客户端测试页面</h3>
+          <h3>webSocket客户端测试页面</h3>
           <p>
-              <text>输入websocket地址</text><br>
+              <text>输入websocket地址(修改为你实际的websocket服务地址)</text><br>
               <input type="text" id="url_input" style="width:200pt;font-size:14px;" value="ws://localhost:3456/ws">
               <button onClick="initWebSocket();">连接</button>
               <button onClick="stopWebSocket();">断开</button>
-              <button onClick="checkSocket();">状态</button>
+              <button onClick="checkSocket();">当前连接状态</button>
           </p>
           <p>
               <h3>调试框</h3>
@@ -17,6 +17,7 @@
           </p>
           <p> 
               <h3>输入发送内容</h3>
+              <h4>(本demo中的websocket服务只接受json格式文本数据(注意:不能用单引号来代替双引号,否则json解析会出错)</h4>
               <textarea type="text" id="inputText" cols="60"  rows="10" onkeydown="if(event.keyCode==13)sendMessage();"></textarea>
               <button onClick="sendMessage();">发送</button>
           </p>

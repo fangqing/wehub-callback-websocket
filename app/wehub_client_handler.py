@@ -21,7 +21,6 @@ class WeHubClientHandler(WebSocket):
 		try:
 			if message.is_text:
 				request_dict = json.loads(str(message),strict=False)
-				print (request_dict)
 				self.logger.info("received a message =%s"%(request_dict))
 				self.process_commond(request_dict)
 		except Exception as e:

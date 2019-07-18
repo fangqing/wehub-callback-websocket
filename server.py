@@ -7,6 +7,7 @@ from app.wehub_client_manager import WeHubClientManager
 WebSocketPlugin(cherrypy.engine).subscribe()
 cherrypy.tools.websocket = WebSocketTool()
 
+SERVER_HOST = '0.0.0.0'
 SERVER_PORT = 3456
 from jinja2 import Environment, FileSystemLoader
 env = Environment(loader=FileSystemLoader('app/templates'))
@@ -40,7 +41,7 @@ class Root(object):
 
 if __name__ == '__main__':
 	cherrypy.config.update({
-		'server.socket_host': '0.0.0.0',
+		'server.socket_host': SERVER_HOST,
 		'server.socket_port': SERVER_PORT,
 		'tools.staticdir.root': os.path.abspath(os.path.dirname(__file__))
 		})

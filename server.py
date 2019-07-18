@@ -3,6 +3,7 @@ import cherrypy
 from ws4py.server.cherrypyserver import WebSocketPlugin, WebSocketTool
 from app.wehub_client_handler import WeHubClientHandler
 from app.wehub_client_manager import WeHubClientManager
+import logging
 
 WebSocketPlugin(cherrypy.engine).subscribe()
 cherrypy.tools.websocket = WebSocketTool()
@@ -40,10 +41,13 @@ class Root(object):
 		return client.process_browse_command(message)
 
 if __name__ == '__main__':
+	logging.basicConfig(level=logging.INFO,format='%(asctime)s-%(name)s-[%(levelname)s]:%(message)s ',)
+
 	cherrypy.config.update({
 		'server.socket_host': SERVER_HOST,
 		'server.socket_port': SERVER_PORT,
-		'tools.staticdir.root': os.path.abspath(os.path.dirname(__file__))
+		'tools.staticdir.root': os.path.abspath(os.path.dirname(__file__)),
+		'log.screen': True
 		})
 
 	wehub_cfg ={

@@ -1,6 +1,7 @@
 import json
 import _thread
 from .utils import singleton
+import logging
 
 @singleton
 class WeHubClientManager(object):
@@ -8,7 +9,8 @@ class WeHubClientManager(object):
 		"""
 		singleton
 		"""
-		print(self)
+		self.logger = logging.getLogger("ClientManager")
+		self.logger.setLevel(logging.INFO)
 		self.clients = {}
 
 	def add(self, client,name):
@@ -17,7 +19,7 @@ class WeHubClientManager(object):
 		"""
 		self.clients[name]=client
 		self.refresh()
-		print ('add a wehub client, current client count: %s,tid=%d'%(self.count(),_thread.get_ident()))
+		self.logger.info('add a wehub client, current client count: %s,tid=%d'%(self.count(),_thread.get_ident()))
 	
 	def remove(self, client,name):
 		"""
@@ -25,7 +27,7 @@ class WeHubClientManager(object):
 		"""
 		self.clients.pop(name)
 		self.refresh()
-		print ('remove a wehub client, current client count: %s,tid=%d'%(self.count(),_thread.get_ident()))
+		self.logger.info('remove a wehub client, current client count: %s,tid=%d'%(self.count(),_thread.get_ident()))
 
 	def get(self, name):
 		return self.clients[name];

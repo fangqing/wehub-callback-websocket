@@ -6,8 +6,9 @@ from . import const
 
 class WeHubClientHandler(WebSocket):
 	def _init(self):
-		self.logger = logging.getLogger('WeHubClientHandler')
-		
+		self.logger = logging.getLogger("ClientHandler")
+		self.logger.setLevel(logging.INFO)
+
 	def opened(self):
 		self._init()
 		WeHubClientManager().add(self,str(self.sock.getpeername()))

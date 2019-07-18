@@ -19,7 +19,8 @@
 ---
 
 测试方法:
-1.开启websocket服务器: 运行python start_server.py  
+1.开启websocket服务器: window下运行 start.bat
+                    mac/linux下运行 start.sh
 
 2.在浏览器中打开测试页面 websocket_client_test.html 
 将页面中的websockt地址改为 ws://127.0.0.1:3456/ws,然后点击"连接"

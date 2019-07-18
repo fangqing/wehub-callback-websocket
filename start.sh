@@ -1,1 +1,1 @@
-nohup python server.py >server.log 2>&1 &
+nohup python server.py --name 'websockeet' >server.log 2>&1 &

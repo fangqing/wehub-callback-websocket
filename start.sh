@@ -1,0 +1,1 @@
+nohup python server.py >my.log 2>&1 &

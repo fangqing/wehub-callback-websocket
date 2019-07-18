@@ -9,23 +9,23 @@ class WeHubClientHandler(WebSocket):
 		self.logger = logging.getLogger('WeHubClientHandler')
 		
 	def opened(self):
-		print("a client connected = %s,pid = %s"%(self.sock.getpeername(),os.getpid()))
-		WeHubClientManager().add(self,str(self.sock.getpeername()))
 		self._init()
+		WeHubClientManager().add(self,str(self.sock.getpeername()))
+		self.logger.info("a client connected = %s,pid = %s"%(self.sock.getpeername(),os.getpid()))
 
 	def closed(self,code,reason = None):
-		print("a client disconnected,code =%d,reason=%s"%(code,reason,))
 		WeHubClientManager().remove(self,str(self.sock.getpeername()))
+		self.logger.info("a client disconnected,code =%d,reason=%s"%(code,reason))
 
 	def received_message(self, message):
-		print ("ws received a message,len=%d,type=%s"%(len(message),type(message)))
 		try:
 			if message.is_text:
 				request_dict = json.loads(str(message),strict=False)
 				print (request_dict)
+				self.logger.info("received a message =%s"%(request_dict))
 				self.process_commond(request_dict)
 		except Exception as e:
-			print("exception occur:", e,traceback.format_exc())
+			self.logger.info("exception occur:", e,traceback.format_exc())
 			return
 		
 
@@ -42,7 +42,6 @@ class WeHubClientHandler(WebSocket):
 
 		error_code, error_reason,ack_data,ack_type = self.main_req_process(wxid,action,req_data_dict)
 		ack_dict= {'error_code':error_code,'error_reason':error_reason,'ack_type':str(ack_type),'data':ack_data}
-		print("-------------respone data:",ack_dict)
 		self.send(json.dumps(ack_dict))
 
 		
@@ -83,7 +82,7 @@ class WeHubClientHandler(WebSocket):
 				msg_type = msg_unit.get('msg_type',const.MSG_TYPE_INVALID)
 				if msg_type in const.UPLOADFILE_MSG_TYPES:
 					file_index = msg_unit.get('file_index','')
-					if len(file_index)>0 and check_index(file_index):
+					if len(file_index)>0:
 						task_data = {
 							'task_type':const.TASK_TYPE_UPLOAD_FILE,
 							'task_dict':{
@@ -116,7 +115,7 @@ class WeHubClientHandler(WebSocket):
 					self.logger.info("recv chatmsg:{0},from:{1}".format(msg,wxid_from))
 
 					#测试代码
-					if wxid_from ==const.TEST_WXID and  msg==str('123'):
+					if wxid_from ==const.TEST_WXID and  msg==str('fqtest'):
 						reply_task_list =[]
 						if len(room_wxid)>0:
 							push_msgunit1 = {

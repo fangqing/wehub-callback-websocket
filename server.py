@@ -14,6 +14,10 @@ from jinja2 import Environment, FileSystemLoader
 env = Environment(loader=FileSystemLoader('app/templates'))
 
 class Root(object):
+	def __init__(self):
+		self.logger = logging.getLogger("Root")
+		self.logger.setLevel(logging.INFO)
+
 	@cherrypy.expose
 	def index(self):
 		return 'yes,server is running.<a href="admin">进入管理页面</a>'
@@ -25,7 +29,7 @@ class Root(object):
 
 	@cherrypy.expose
 	def ws(self):
-		print("a websocket connnected")
+		self.logger.info("a websocket connnected")
 		# you can access the class instance through
 		handler = cherrypy.request.ws_handler
 
@@ -34,14 +38,14 @@ class Root(object):
 		'''
 		网页管理界面会通过这个url来发送数据
 		'''
-		print (cherrypy.request.method,clientid,message)
+		self.logger.info(cherrypy.request.method,clientid,message)
 		if clientid not in WeHubClientManager().clients:
 			return "param error!"
 		client = WeHubClientManager().clients.get(clientid)
 		return client.process_browse_command(message)
 
 if __name__ == '__main__':
-	logging.basicConfig(level=logging.INFO,format='%(asctime)s-%(name)s-[%(levelname)s]:%(message)s ',)
+	logging.basicConfig(level=logging.INFO,format='%(asctime)s|%(levelname)s|%(name)s:%(message)s')
 
 	cherrypy.config.update({
 		'server.socket_host': SERVER_HOST,
